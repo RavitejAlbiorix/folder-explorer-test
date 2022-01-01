@@ -1,0 +1,60 @@
+<div class="set-container">
+  <section>
+    <button class="button" (click)="showRootForm()">Add Root</button>
+    <div *ngIf="isAddingRoot" class="margin-top-10">
+      <label>Enter Root Name: </label>
+      <input placeholder="Enter root name here" id="rootNameTxt" type="text" [(ngModel)]="fileFolderName"
+        autocomplete="off" class="name-input" />
+      <button class="button" (click)="addNode(true)">Add</button>
+      <button class="button" (click)="onRemove('root')">Remove</button>
+    </div>
+  </section>
+  <ul>
+    <ng-container *ngTemplateOutlet="recursiveListTmpl; context: { list: fileFolderStructureList }">
+    </ng-container>
+  </ul>
+</div>
+
+<div class="set-container margin-top-10" *ngIf="showFileFolderSelection">
+  <div>
+    <input type="radio" id="file" name="fileType" value="file" (change)="setNodeType($event)" />
+    <label for="file">File</label><br />
+    <input type="radio" id="folder" name="fileType" value="folder" (change)="setNodeType($event)" />
+    <label for="folder">Folder</label><br />
+  </div>
+  <div *ngIf="showChildSection">
+    <label>{{ "Enter child name" }}</label>
+    <input [placeholder]="'Enter child name here'" type="text" [(ngModel)]="fileFolderName" autocomplete="off"
+      class="name-input" />
+    <button class="button" (click)="addNode(false)">Add</button>
+    <button class="button" (click)="onRemove('child')">Remove</button>
+  </div>
+</div>
+
+<pre *ngIf="fileFolderStructureList.length" class="tree-list-json">{{fileFolderStructureList | json}}</pre>
+
+<ng-template #recursiveListTmpl let-list="list">
+  <li *ngFor="let item of list; let i = index">
+    <div *ngIf="item">
+      <div (mouseover)="showAddRemoveOption(item, true)" (mouseleave)="showAddRemoveOption(item, false)">
+        <div class="item">
+          <img class="file-type-icon"
+            [src]="item.type === 'file' ? 'https://img.icons8.com/fluency/48/000000/file.png' : 'https://img.icons8.com/color/48/000000/folder-invoices--v1.png'" />
+          {{ item.name }}
+        </div>
+        <button *ngIf="item.type === 'folder' && item.id === itemId" class="button" (click)="showChildForm(item)">
+          {{ "Add child of " + item.name }}
+        </button>
+        <button *ngIf="item.id === itemId" class="button" (click)="deleteINode(item)">
+          {{ "Delete " + item.name }}
+        </button>
+      </div>
+      <ul *ngIf="item.children.length > 0">
+        <ng-container *ngTemplateOutlet="
+            recursiveListTmpl;
+            context: { list: item.children }
+          "></ng-container>
+      </ul>
+    </div>
+  </li>
+</ng-template>
