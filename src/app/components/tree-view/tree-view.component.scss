@@ -6,8 +6,9 @@ section {
 	margin-left: 15px !important;
 	font-size: 15px;
 	padding: 5px 15px;
-	background-color: cornflowerblue;
+	background-color: #000000;
 	border-radius: 20px;
+	color: white;
 }
 
 .item {
@@ -35,6 +36,8 @@ section {
 .file-type-icon {
 	vertical-align: middle;
 	width: 20px;
+	margin-right: 5px;
+	height: 18px;
 }
 
 .name-input {
@@ -47,4 +50,8 @@ section {
 
 ul, li {
 	list-style: none;
+}
+
+#file-folder-selection {
+	margin-bottom: 10px;
 }

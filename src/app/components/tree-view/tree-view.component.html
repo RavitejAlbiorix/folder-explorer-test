@@ -1,8 +1,8 @@
 <div class="set-container">
   <section>
-    <button class="button" (click)="showRootForm()">Add Root</button>
+    <button class="button" (click)="showRootForm()">Add folder to root</button>
     <div *ngIf="isAddingRoot" class="margin-top-10">
-      <label>Enter Root Name: </label>
+      <img class="file-type-icon" src="assets/icons/folder-open-regular.svg" />
       <input placeholder="Enter root name here" id="rootNameTxt" type="text" [(ngModel)]="fileFolderName"
         autocomplete="off" class="name-input" />
       <button class="button" (click)="addNode(true)">Add</button>
@@ -16,14 +16,13 @@
 </div>
 
 <div class="set-container margin-top-10" *ngIf="showFileFolderSelection">
-  <div>
-    <input type="radio" id="file" name="fileType" value="file" (change)="setNodeType($event)" />
-    <label for="file">File</label><br />
-    <input type="radio" id="folder" name="fileType" value="folder" (change)="setNodeType($event)" />
-    <label for="folder">Folder</label><br />
+  <div id="file-folder-selection">
+    <button (click)="setNodeType('file')">File</button>
+    <button (click)="setNodeType('folder')">Folder</button>
   </div>
   <div *ngIf="showChildSection">
-    <label>{{ "Enter child name" }}</label>
+    <img class="file-type-icon"
+    [src]="selectedNodeType === 'file' ? 'assets/icons/file-regular.svg' : 'assets/icons/folder-open-regular.svg'" />
     <input [placeholder]="'Enter child name here'" type="text" [(ngModel)]="fileFolderName" autocomplete="off"
       class="name-input" />
     <button class="button" (click)="addNode(false)">Add</button>
@@ -31,7 +30,7 @@
   </div>
 </div>
 
-<pre *ngIf="fileFolderStructureList.length" class="tree-list-json">{{fileFolderStructureList | json}}</pre>
+<textarea *ngIf="fileFolderStructureList.length" class="margin-top-10" readonly rows="10" cols="50" >{{fileFolderStructureList | json}}</textarea>
 
 <ng-template #recursiveListTmpl let-list="list">
   <li *ngFor="let item of list; let i = index">
@@ -39,7 +38,7 @@
       <div (mouseover)="showAddRemoveOption(item, true)" (mouseleave)="showAddRemoveOption(item, false)">
         <div class="item">
           <img class="file-type-icon"
-            [src]="item.type === 'file' ? 'https://img.icons8.com/fluency/48/000000/file.png' : 'https://img.icons8.com/color/48/000000/folder-invoices--v1.png'" />
+            [src]="item.type === 'file' ? 'assets/icons/file-regular.svg' : 'assets/icons/folder-open-regular.svg'" />
           {{ item.name }}
         </div>
         <button *ngIf="item.type === 'folder' && item.id === itemId" class="button" (click)="showChildForm(item)">

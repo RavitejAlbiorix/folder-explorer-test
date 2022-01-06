@@ -82,8 +82,8 @@ export class TreeViewComponent {
   }
 
   // set node type
-  setNodeType(event) {
-    this.selectedNodeType = event.target.value;
+  setNodeType(type) {
+    this.selectedNodeType = type;
     this.showChildSection = true;
   }
 
